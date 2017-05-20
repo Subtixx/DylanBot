@@ -37,7 +37,10 @@ namespace DylanTwitch
             foreach (var val in Enum.GetValues(typeof(EventType)))
                 _registeredEvents.Add((EventType) val, new List<Func<object[], bool>>());
 
-            Directory.GetFiles("Plugins", "*.dll").ToList().ForEach(file => LoadPlugin(new FileInfo(file)));
+            var plugins = Directory.GetFiles("Plugins", "*.dll").ToList();
+            plugins.ForEach(file => LoadPlugin(new FileInfo(file)));
+
+            Console.WriteLine($"{plugins.Count} Plugins loaded.");
         }
 
         internal static void Shutdown()
@@ -76,6 +79,7 @@ namespace DylanTwitch
 
         private static void LoadPlugin(FileInfo file)
         {
+            Console.WriteLine($"Loading plugin '{file.Name}'");
             try
             {
                 var assembly = Assembly.LoadFrom(file.FullName);

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CustomCommands")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DylanBot CustomCommands Plugin")]
+[assembly: AssemblyDescription("Plugin to provide custom commands to end-users")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CustomCommands")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("DylanBot CustomCommands Plugin")]
+[assembly: AssemblyCopyright("Copyright © Subtixx 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

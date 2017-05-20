@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PointSystem")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DylanBot Point System Plugin")]
+[assembly: AssemblyDescription("Plugin to provide a currency for viewers")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PointSystem")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("DylanBot Point System Plugin")]
+[assembly: AssemblyCopyright("Copyright © Subtixx 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

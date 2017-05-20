@@ -14,15 +14,11 @@ namespace PointSystem
 
         public override void Load()
         {
-            Console.WriteLine("Loading PointSystem Plugin...");
-
             LoadSettingsFile();
             AddCustomUserSettings();
 
             Events.RegisterEvents();
             Commands.RegisterCommands();
-
-            Console.WriteLine("Loaded PointSystem Plugin!");
         }
 
         private void AddCustomUserSettings()
@@ -41,8 +37,6 @@ namespace PointSystem
             Settings = File.Exists(SETTINGS_FILE)
                 ? JsonConvert.DeserializeObject<PointSystemSettings>(File.ReadAllText(SETTINGS_FILE))
                 : new PointSystemSettings();
-
-            Console.WriteLine("Loaded Settings file!");
         }
 
         public override void Unload()

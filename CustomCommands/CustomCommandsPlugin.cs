@@ -15,7 +15,6 @@ namespace CustomCommands
 
         public override void Load()
         {
-            Console.WriteLine("Loading CustomCommands Plugin...");
             LoadSettingsFile();
 
             foreach (var command in Settings.RegisteredCommands)
@@ -34,7 +33,6 @@ namespace CustomCommands
                     return true;
                 });
             }
-            Console.WriteLine($"Loaded CustomCommands Plugin ({Settings.RegisteredCommands.Count} Commands)!");
         }
 
         private void LoadSettingsFile()
@@ -42,8 +40,6 @@ namespace CustomCommands
             Settings = File.Exists(SETTINGS_FILE)
                 ? JsonConvert.DeserializeObject<CustomCommandsSettings>(File.ReadAllText(SETTINGS_FILE))
                 : new CustomCommandsSettings();
-
-            Console.WriteLine("Loaded CustomCommands Settings file!");
         }
 
         public override void Unload()

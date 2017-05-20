@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DylanBot TwitchBot")]
-[assembly: AssemblyDescription("DylanBot is a modular bot for twitch")]
+[assembly: AssemblyTitle("Raffle")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DylanBot TwitchBot")]
-[assembly: AssemblyCopyright("Copyright © Subtixx 2017")]
+[assembly: AssemblyProduct("Raffle")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2e990184-6f98-4b0d-9dcc-0800e627f2f0")]
+[assembly: Guid("6860bed2-a01f-4402-9645-767d28e0a5ad")]
 
 // Version information for an assembly consists of the following four values:
 //
