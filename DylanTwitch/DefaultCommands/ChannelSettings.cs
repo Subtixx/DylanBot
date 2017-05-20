@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib;
+﻿using TwitchLib;
 using TwitchLib.Events.Client;
-using TwitchLib.Extensions.Client;
 
 namespace DylanTwitch.DefaultCommands
 {
@@ -15,7 +9,7 @@ namespace DylanTwitch.DefaultCommands
         {
             ChatBot.CommandController.RegisterWhisperCommand("setgame", OnSetGameCommand);
         }
-        
+
         private static bool OnSetGameCommand(OnWhisperCommandReceivedArgs args)
         {
             var username = args.WhisperMessage.Username;
@@ -30,19 +24,15 @@ namespace DylanTwitch.DefaultCommands
             var status = a[0];
             var game = a[1];
 
-            if ((!UserDatabase.Users.ContainsKey(username) || !UserDatabase.Users[username].Permissions.Contains("edit_game")) && !username.Equals(Settings.Config.Username))
-            {
-                // No permission.
+            if ((!UserDatabase.Users.ContainsKey(username) ||
+                 !UserDatabase.Users[username].Permissions.Contains("edit_game")) &&
+                !username.Equals(Settings.Config.Username))
                 return true;
-            }
 
-            TwitchAPI.Channels.v5.UpdateChannel(Settings.Config.ChannelId, status, game).ContinueWith(task =>
-            {
-                ChatBot.Client.SendWhisper(username, $"Status set to: {status} Game set to: {game}");
-            });
+            TwitchAPI.Channels.v5.UpdateChannel(Settings.Config.ChannelId, status, game)
+                .ContinueWith(
+                    task => { ChatBot.Client.SendWhisper(username, $"Status set to: {status} Game set to: {game}"); });
             return true;
         }
-
-        
     }
 }

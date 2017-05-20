@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TwitchLib;
 using TwitchLib.Events.Client;
 
@@ -10,7 +6,7 @@ namespace DylanTwitch.DefaultCommands
 {
     public static class UserCommands
     {
-        private static DateTime? ChannelLiveStart = null;
+        private static DateTime? ChannelLiveStart;
 
         public static void RegisterCommands()
         {
@@ -28,7 +24,7 @@ namespace DylanTwitch.DefaultCommands
         {
             if (ChannelLiveStart != null)
             {
-                TimeSpan diff = DateTime.Now.Subtract(ChannelLiveStart.Value);
+                var diff = DateTime.Now.Subtract(ChannelLiveStart.Value);
                 ChatBot.Client.SendMessage(
                     $"Channel went live {ChannelLiveStart:MM/dd/yy H:mm}, uptime: {diff.TotalHours:F2} Hours");
             }
@@ -39,12 +35,14 @@ namespace DylanTwitch.DefaultCommands
                     if (task.Result.HasValue)
                     {
                         ChannelLiveStart = DateTime.Now - task.Result.Value;
-                        TimeSpan diff = DateTime.Now.Subtract(ChannelLiveStart.Value);
+                        var diff = DateTime.Now.Subtract(ChannelLiveStart.Value);
                         ChatBot.Client.SendMessage(
                             $"Channel went live {ChannelLiveStart:MM/dd/yy H:mm}, uptime: {diff.TotalHours:F2} Hours");
                     }
                     else
+                    {
                         ChatBot.Client.SendMessage("The channel is not live!");
+                    }
                 });
             }
             return true;
@@ -52,14 +50,15 @@ namespace DylanTwitch.DefaultCommands
 
         private static bool OnWatchTimeCommand(OnChatCommandReceivedArgs args)
         {
-            User user = UserDatabase.Users[args.Command.ChatMessage.Username];
+            var user = UserDatabase.Users[args.Command.ChatMessage.Username];
             if (user.JoinDateTime.HasValue)
             {
                 user.TotalWatchTime += DateTime.Now.Subtract(user.JoinDateTime.Value).TotalSeconds;
                 user.JoinDateTime = DateTime.Now;
             }
 
-            ChatBot.Client.SendMessage($"{user.TwitchUsername} current watch time: {Math.Round(user.TotalWatchTime / 60 / 60, 2):F2} Hours");
+            ChatBot.Client.SendMessage(
+                $"{user.TwitchUsername} current watch time: {Math.Round(user.TotalWatchTime / 60 / 60, 2):F2} Hours");
             return true;
         }
     }

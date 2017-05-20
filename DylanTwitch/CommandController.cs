@@ -6,7 +6,7 @@
 // Last Modified By : Subtixx
 // Last Modified On : 05-19-2017
 // ***********************************************************************
-// <copyright file="CommandController.cs" company="Flying Penguin">
+// <copyright file="CommandController.cs">
 //     Copyright ©  2017
 // </copyright>
 // <summary></summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DylanTwitch;
+using DylanTwitch.Util;
 using TwitchLib.Events.Client;
 
 namespace PointSystem
@@ -13,7 +14,7 @@ namespace PointSystem
         public static void RegisterCommands()
         {
             // Add chat command
-            ChatBot.CommandController.RegisterGlobalCommand("points", OnPointCommand);
+            ChatBot.CommandController.RegisterGlobalCommand(PointSystemPlugin.Settings.PointCommand, OnPointCommand);
 
             AdminCommands.RegisterCommands();
             ArenaCommands.RegisterCommands();
@@ -21,7 +22,7 @@ namespace PointSystem
 
         public static void Unregister()
         {
-            ChatBot.CommandController.UnregisterGlobalCommand("points");
+            ChatBot.CommandController.UnregisterGlobalCommand(PointSystemPlugin.Settings.PointCommand);
         }
 
         private static bool OnPointCommand(OnChatCommandReceivedArgs args)
@@ -31,10 +32,33 @@ namespace PointSystem
 
             if (UserDatabase.Users.ContainsKey(args.Command.ChatMessage.Username) &&
                 UserDatabase.Users[args.Command.ChatMessage.Username].CustomSettings.ContainsKey("points"))
+            {
+                var points = int.Parse(UserDatabase.Users[args.Command.ChatMessage.Username].CustomSettings["points"]);
+                var pointName = points > 1
+                    ? PointSystemPlugin.Settings.PointNamePlural
+                    : PointSystemPlugin.Settings.PointName;
+
+
                 ChatBot.Client.SendMessage(
-                    $"You have {UserDatabase.Users[args.Command.ChatMessage.Username].CustomSettings["points"]} Points!");
+                    TranslateableString.Translate(PointSystemPlugin.Settings.PointAmountMessage,
+                        new Dictionary<string, string>
+                        {
+                            {"$amount", points.ToString()},
+                            {"$pointName", pointName}
+                        })
+                );
+            }
             else
-                ChatBot.Client.SendMessage("You have 0 Points!");
+            {
+                ChatBot.Client.SendMessage(
+                    TranslateableString.Translate(PointSystemPlugin.Settings.PointAmountMessage,
+                        new Dictionary<string, string>
+                        {
+                            {"$amount", "0"},
+                            {"$pointName", PointSystemPlugin.Settings.PointNamePlural}
+                        })
+                );
+            }
             return true;
         }
     }

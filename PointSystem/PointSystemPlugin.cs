@@ -9,7 +9,7 @@ namespace PointSystem
 {
     public class PointSystemPlugin : Plugin
     {
-        private const string SETTINGS_FILE = "Settings/pointSystemPlugin.config";
+        private const string SETTINGS_FILE = "Settings/PointSystem.config";
         public static PointSystemSettings Settings;
 
         public override void Load()

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using DylanTwitch.DefaultCommands;
+﻿using DylanTwitch.DefaultCommands;
 using TwitchLib;
 using TwitchLib.Events.Client;
-using TwitchLib.Extensions.Client;
 using TwitchLib.Models.Client;
 
 namespace DylanTwitch
 {
     public class ChatBot
     {
+        internal const string CLIENT_ID = "27yqxc53mrldhm1mwtobwuqbr7x85f6";
+
         public static TwitchClient Client;
         public static readonly CommandController CommandController = new CommandController();
-        
-        internal const string CLIENT_ID = "27yqxc53mrldhm1mwtobwuqbr7x85f6";
 
         internal ChatBot()
         {

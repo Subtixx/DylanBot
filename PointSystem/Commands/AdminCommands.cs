@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DylanTwitch;
+﻿using DylanTwitch;
 using TwitchLib.Events.Client;
 
 namespace PointSystem
@@ -12,37 +7,163 @@ namespace PointSystem
     {
         public static void RegisterCommands()
         {
-            ChatBot.CommandController.RegisterGlobalCommand("setpoints", OnSetPoints);
+            // TODO: Maybe do a global !points [set/add/remove] command?
+            ChatBot.CommandController.RegisterGlobalCommand($"set{PointSystemPlugin.Settings.PointCommand}", OnSetPoints);
+            ChatBot.CommandController.RegisterGlobalCommand($"add{PointSystemPlugin.Settings.PointCommand}", OnAddPoints);
+            ChatBot.CommandController.RegisterGlobalCommand($"remove{PointSystemPlugin.Settings.PointCommand}", OnRemovePoints);
         }
 
-        public static bool OnSetPoints(OnChatCommandReceivedArgs args)
+        private static bool OnAddPoints(OnChatCommandReceivedArgs args)
         {
-            if (!UserDatabase.Users.ContainsKey(args.Command.ChatMessage.Username) ||
-                !UserDatabase.Users[args.Command.ChatMessage.Username].Permissions.Contains("edit_points") && !args.Command.ChatMessage.Username.Equals(Settings.Config.Username))
-            {
-                ChatBot.Client.SendMessage("No permission.");
-                return false;
-            }
-
+            var username  = args.Command.ChatMessage.Username;
             int amount;
-            if (args.Command.ArgumentsAsList.Count != 2 || !int.TryParse(args.Command.ArgumentsAsList[1], out amount))
+
+            if (!UserDatabase.Users.ContainsKey(username))
+                return false; // No user in database found.
+
+            if (UserDatabase.Users[username].HasPermission("add_global_points"))
             {
-                ChatBot.Client.SendMessage("Syntax: !setpoints [User] [Amount]");
-                return false;
+                if (int.TryParse(args.Command.ArgumentsAsList[0], out amount))
+                {
+                    foreach (var userKvp in UserDatabase.Users)
+                    {
+                        var user = userKvp.Value;
+                        if (!user.CustomSettings.ContainsKey("points"))
+                            user.CustomSettings.Add("points", "0");
+
+                        user.CustomSettings["points"] = (int.Parse(user.CustomSettings["points"]) + amount).ToString();
+                    }
+                    ChatBot.Client.SendMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} added to everybody");
+
+                    return true;
+                }
+            }
+            else if (UserDatabase.Users[username].HasPermission("add_points"))
+            {
+                if (args.Command.ArgumentsAsList.Count != 2 ||
+                    !int.TryParse(args.Command.ArgumentsAsList[1], out amount))
+                {
+                    ChatBot.Client.SendMessage($"Syntax: !add{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
+                    return false;
+                }
+
+                var target = args.Command.ArgumentsAsList[0];
+                if (!UserDatabase.Users.ContainsKey(target))
+                {
+                    ChatBot.Client.SendMessage($"User '{target}' doesn't exist!");
+                    return false;
+                }
+
+                if (!UserDatabase.Users[target].CustomSettings.ContainsKey("points"))
+                    UserDatabase.Users[target].CustomSettings.Add("points", "0");
+
+                UserDatabase.Users[target].CustomSettings["points"] =
+                    (int.Parse(UserDatabase.Users[target].CustomSettings["points"]) + amount).ToString();
+                ChatBot.Client.SendMessage($"'{target}' {amount} {PointSystemPlugin.Settings.PointNamePlural} added");
             }
 
-            var target = args.Command.ArgumentsAsList[0];
-            if (!UserDatabase.Users.ContainsKey(target))
+            return true;
+        }
+
+        private static bool OnRemovePoints(OnChatCommandReceivedArgs args)
+        {
+            var username = args.Command.ChatMessage.Username;
+            int amount;
+
+            if (!UserDatabase.Users.ContainsKey(username))
+                return false; // No user in database found.
+
+            if (UserDatabase.Users[username].HasPermission("remove_global_points"))
             {
-                ChatBot.Client.SendMessage($"User '{target}' doesn't exist!");
-                return false;
+                if (int.TryParse(args.Command.ArgumentsAsList[0], out amount))
+                {
+                    foreach (var userKvp in UserDatabase.Users)
+                    {
+                        var user = userKvp.Value;
+                        if (!user.CustomSettings.ContainsKey("points"))
+                            user.CustomSettings.Add("points", "0");
+
+                        user.CustomSettings["points"] = (int.Parse(user.CustomSettings["points"]) - amount).ToString();
+                    }
+                    ChatBot.Client.SendMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} removed from everybody");
+
+                    return true;
+                }
+            }
+            else if (UserDatabase.Users[username].HasPermission("remove_points"))
+            {
+                if (args.Command.ArgumentsAsList.Count != 2 ||
+                    !int.TryParse(args.Command.ArgumentsAsList[1], out amount))
+                {
+                    ChatBot.Client.SendMessage($"Syntax: !remove{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
+                    return false;
+                }
+
+                var target = args.Command.ArgumentsAsList[0];
+                if (!UserDatabase.Users.ContainsKey(target))
+                {
+                    ChatBot.Client.SendMessage($"User '{target}' doesn't exist!");
+                    return false;
+                }
+
+                if (!UserDatabase.Users[target].CustomSettings.ContainsKey("points"))
+                    UserDatabase.Users[target].CustomSettings.Add("points", "0");
+
+                UserDatabase.Users[target].CustomSettings["points"] =
+                    (int.Parse(UserDatabase.Users[target].CustomSettings["points"]) - amount).ToString();
+                ChatBot.Client.SendMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} removed from '{target}'");
             }
 
-            if (!UserDatabase.Users[target].CustomSettings.ContainsKey("points"))
-                UserDatabase.Users[target].CustomSettings.Add("points", "0");
+            return true;
+        }
 
-            UserDatabase.Users[target].CustomSettings["points"] = amount.ToString();
-            ChatBot.Client.SendMessage($"'{target}' Points set to {amount}");
+        private static bool OnSetPoints(OnChatCommandReceivedArgs args)
+        {
+            var username = args.Command.ChatMessage.Username;
+            int amount;
+
+            if (!UserDatabase.Users.ContainsKey(username))
+                return false; // No user in database found.
+
+            if (UserDatabase.Users[username].HasPermission("set_global_points"))
+            {
+                if (int.TryParse(args.Command.ArgumentsAsList[0], out amount))
+                {
+                    foreach (var userKvp in UserDatabase.Users)
+                    {
+                        var user = userKvp.Value;
+                        if (!user.CustomSettings.ContainsKey("points"))
+                            user.CustomSettings.Add("points", "0");
+
+                        user.CustomSettings["points"] = amount.ToString();
+                    }
+                    ChatBot.Client.SendMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} set to everybody");
+
+                    return true;
+                }
+            }
+            else if (UserDatabase.Users[username].HasPermission("set_points"))
+            {
+                if (args.Command.ArgumentsAsList.Count != 2 ||
+                    !int.TryParse(args.Command.ArgumentsAsList[1], out amount))
+                {
+                    ChatBot.Client.SendMessage($"Syntax: !set{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
+                    return false;
+                }
+
+                var target = args.Command.ArgumentsAsList[0];
+                if (!UserDatabase.Users.ContainsKey(target))
+                {
+                    ChatBot.Client.SendMessage($"User '{target}' doesn't exist!");
+                    return false;
+                }
+
+                if (!UserDatabase.Users[target].CustomSettings.ContainsKey("points"))
+                    UserDatabase.Users[target].CustomSettings.Add("points", "0");
+
+                UserDatabase.Users[target].CustomSettings["points"] = amount.ToString();
+                ChatBot.Client.SendMessage($"'{target}' {amount} {PointSystemPlugin.Settings.PointNamePlural} set");
+            }
 
             return true;
         }

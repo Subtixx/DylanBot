@@ -6,7 +6,7 @@
 // Last Modified By : Subtixx
 // Last Modified On : 05-19-2017
 // ***********************************************************************
-// <copyright file="User.cs" company="Flying Penguin">
+// <copyright file="User.cs">
 //     Copyright ©  2017
 // </copyright>
 // <summary></summary>
@@ -47,6 +47,7 @@ namespace DylanTwitch
         /// Initializes a new instance of the <see cref="User"/> class.
         /// </summary>
         /// <param name="eUsername">The username.</param>
+        /// <param name="joinDate"></param>
         public User(string eUsername, DateTime? joinDate = null)
         {
             TwitchUsername = eUsername;
@@ -67,6 +68,14 @@ namespace DylanTwitch
                     }
                 }
             }
+        }
+
+        public bool HasPermission(string permission)
+        {
+            if (TwitchUsername.Equals(Settings.Config.Username))
+                return true; // Bot has all permissions.
+
+            return Permissions.Contains(permission);
         }
     }
 }
