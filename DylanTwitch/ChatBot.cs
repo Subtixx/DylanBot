@@ -47,6 +47,7 @@ namespace DylanTwitch
         private void RegisterGlobalCommands()
         {
             UserCommands.RegisterCommands();
+            ChannelMod.RegisterCommands();
             ChannelSettings.RegisterCommands();
         }
 

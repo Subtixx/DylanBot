@@ -67,6 +67,12 @@ namespace DylanTwitch
 
         internal static void ProcessEvent(EventType evt, params object[] args)
         {
+            if (!_registeredEvents.ContainsKey(evt))
+            {
+                Console.WriteLine($"Catastrophic failure. {evt} doesn't exist as event.");
+                return;
+            }
+
             foreach (var func in _registeredEvents[evt])
             {
                 func(args);

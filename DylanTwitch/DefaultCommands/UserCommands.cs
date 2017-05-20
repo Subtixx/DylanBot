@@ -3,15 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TwitchLib;
 using TwitchLib.Events.Client;
 
 namespace DylanTwitch.DefaultCommands
 {
     public static class UserCommands
     {
+        private static DateTime? ChannelLiveStart = null;
+
         public static void RegisterCommands()
         {
             ChatBot.CommandController.RegisterGlobalCommand("watchtime", OnWatchTimeCommand);
+
+            TwitchAPI.Streams.v5.GetUptime(Settings.Config.ChannelId).ContinueWith(task =>
+            {
+                if (task.Result.HasValue)
+                    ChannelLiveStart = DateTime.Now - task.Result.Value;
+            });
+            ChatBot.CommandController.RegisterGlobalCommand("uptime", OnUptimeCommand);
+        }
+
+        private static bool OnUptimeCommand(OnChatCommandReceivedArgs args)
+        {
+            if (ChannelLiveStart != null)
+            {
+                TimeSpan diff = DateTime.Now.Subtract(ChannelLiveStart.Value);
+                ChatBot.Client.SendMessage(
+                    $"Channel went live {ChannelLiveStart:MM/dd/yy H:mm}, uptime: {diff.TotalHours:F2} Hours");
+            }
+            else
+            {
+                TwitchAPI.Streams.v5.GetUptime(Settings.Config.ChannelId).ContinueWith(task =>
+                {
+                    if (task.Result.HasValue)
+                    {
+                        ChannelLiveStart = DateTime.Now - task.Result.Value;
+                        TimeSpan diff = DateTime.Now.Subtract(ChannelLiveStart.Value);
+                        ChatBot.Client.SendMessage(
+                            $"Channel went live {ChannelLiveStart:MM/dd/yy H:mm}, uptime: {diff.TotalHours:F2} Hours");
+                    }
+                    else
+                        ChatBot.Client.SendMessage("The channel is not live!");
+                });
+            }
+            return true;
         }
 
         private static bool OnWatchTimeCommand(OnChatCommandReceivedArgs args)

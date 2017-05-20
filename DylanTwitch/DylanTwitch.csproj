@@ -59,6 +59,7 @@
     <Compile Include="ChatBot.cs" />
     <Compile Include="CommandController.cs" />
     <Compile Include="CredentialManager.cs" />
+    <Compile Include="DefaultCommands\ChannelMod.cs" />
     <Compile Include="DefaultCommands\ChannelSettings.cs" />
     <Compile Include="DefaultCommands\UserCommands.cs" />
     <Compile Include="PluginSystem.cs" />
