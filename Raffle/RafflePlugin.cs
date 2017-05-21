@@ -17,9 +17,9 @@ namespace Raffle
             LoadSettingsFile();
 
             if (Settings.EnterGiveawayCommand != "")
-                ChatBot.CommandController.RegisterGlobalCommand(Settings.EnterGiveawayCommand, OnEnterRaffleCommand);
+                PluginSystem.Commands.RegisterGlobalCommand(Settings.EnterGiveawayCommand, OnEnterRaffleCommand);
 
-            ChatBot.CommandController.RegisterGlobalCommand("raffle", OnRaffleCommand, new List<string> {"giveaway"});
+            PluginSystem.Commands.RegisterGlobalCommand("raffle", OnRaffleCommand, new List<string> {"giveaway"});
         }
 
         private bool OnRaffleCommand(OnChatCommandReceivedArgs arg)
@@ -44,7 +44,7 @@ namespace Raffle
                         actions += "/draw";
                 }
 
-                ChatBot.Client.SendMessage($"Syntax: !raffle [Action ({actions})]");
+                PluginSystem.SendChatMessage($"Syntax: !raffle [Action ({actions})]");
                 return false;
             }
 

@@ -8,9 +8,9 @@ namespace PointSystem
         public static void RegisterCommands()
         {
             // TODO: Maybe do a global !points [set/add/remove] command?
-            ChatBot.CommandController.RegisterGlobalCommand($"set{PointSystemPlugin.Settings.PointCommand}", OnSetPoints);
-            ChatBot.CommandController.RegisterGlobalCommand($"add{PointSystemPlugin.Settings.PointCommand}", OnAddPoints);
-            ChatBot.CommandController.RegisterGlobalCommand($"remove{PointSystemPlugin.Settings.PointCommand}", OnRemovePoints);
+            PluginSystem.Commands.RegisterGlobalCommand($"set{PointSystemPlugin.Settings.PointCommand}", OnSetPoints);
+            PluginSystem.Commands.RegisterGlobalCommand($"add{PointSystemPlugin.Settings.PointCommand}", OnAddPoints);
+            PluginSystem.Commands.RegisterGlobalCommand($"remove{PointSystemPlugin.Settings.PointCommand}", OnRemovePoints);
         }
 
         private static bool OnAddPoints(OnChatCommandReceivedArgs args)
@@ -33,7 +33,7 @@ namespace PointSystem
 
                         user.CustomSettings["points"] = (int.Parse(user.CustomSettings["points"]) + amount).ToString();
                     }
-                    ChatBot.Client.SendMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} added to everybody");
+                    PluginSystem.SendChatMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} added to everybody");
 
                     return true;
                 }
@@ -43,14 +43,14 @@ namespace PointSystem
                 if (args.Command.ArgumentsAsList.Count != 2 ||
                     !int.TryParse(args.Command.ArgumentsAsList[1], out amount))
                 {
-                    ChatBot.Client.SendMessage($"Syntax: !add{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
+                    PluginSystem.SendChatMessage($"Syntax: !add{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
                     return false;
                 }
 
                 var target = args.Command.ArgumentsAsList[0];
                 if (!UserDatabase.Users.ContainsKey(target))
                 {
-                    ChatBot.Client.SendMessage($"User '{target}' doesn't exist!");
+                    PluginSystem.SendChatMessage($"User '{target}' doesn't exist!");
                     return false;
                 }
 
@@ -59,7 +59,7 @@ namespace PointSystem
 
                 UserDatabase.Users[target].CustomSettings["points"] =
                     (int.Parse(UserDatabase.Users[target].CustomSettings["points"]) + amount).ToString();
-                ChatBot.Client.SendMessage($"'{target}' {amount} {PointSystemPlugin.Settings.PointNamePlural} added");
+                PluginSystem.SendChatMessage($"'{target}' {amount} {PointSystemPlugin.Settings.PointNamePlural} added");
             }
 
             return true;
@@ -85,7 +85,7 @@ namespace PointSystem
 
                         user.CustomSettings["points"] = (int.Parse(user.CustomSettings["points"]) - amount).ToString();
                     }
-                    ChatBot.Client.SendMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} removed from everybody");
+                    PluginSystem.SendChatMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} removed from everybody");
 
                     return true;
                 }
@@ -95,14 +95,14 @@ namespace PointSystem
                 if (args.Command.ArgumentsAsList.Count != 2 ||
                     !int.TryParse(args.Command.ArgumentsAsList[1], out amount))
                 {
-                    ChatBot.Client.SendMessage($"Syntax: !remove{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
+                    PluginSystem.SendChatMessage($"Syntax: !remove{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
                     return false;
                 }
 
                 var target = args.Command.ArgumentsAsList[0];
                 if (!UserDatabase.Users.ContainsKey(target))
                 {
-                    ChatBot.Client.SendMessage($"User '{target}' doesn't exist!");
+                    PluginSystem.SendChatMessage($"User '{target}' doesn't exist!");
                     return false;
                 }
 
@@ -111,7 +111,7 @@ namespace PointSystem
 
                 UserDatabase.Users[target].CustomSettings["points"] =
                     (int.Parse(UserDatabase.Users[target].CustomSettings["points"]) - amount).ToString();
-                ChatBot.Client.SendMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} removed from '{target}'");
+                PluginSystem.SendChatMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} removed from '{target}'");
             }
 
             return true;
@@ -137,7 +137,7 @@ namespace PointSystem
 
                         user.CustomSettings["points"] = amount.ToString();
                     }
-                    ChatBot.Client.SendMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} set to everybody");
+                    PluginSystem.SendChatMessage($"{amount} {PointSystemPlugin.Settings.PointNamePlural} set to everybody");
 
                     return true;
                 }
@@ -147,14 +147,14 @@ namespace PointSystem
                 if (args.Command.ArgumentsAsList.Count != 2 ||
                     !int.TryParse(args.Command.ArgumentsAsList[1], out amount))
                 {
-                    ChatBot.Client.SendMessage($"Syntax: !set{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
+                    PluginSystem.SendChatMessage($"Syntax: !set{PointSystemPlugin.Settings.PointCommand} [User] [Amount]");
                     return false;
                 }
 
                 var target = args.Command.ArgumentsAsList[0];
                 if (!UserDatabase.Users.ContainsKey(target))
                 {
-                    ChatBot.Client.SendMessage($"User '{target}' doesn't exist!");
+                    PluginSystem.SendChatMessage($"User '{target}' doesn't exist!");
                     return false;
                 }
 
@@ -162,7 +162,7 @@ namespace PointSystem
                     UserDatabase.Users[target].CustomSettings.Add("points", "0");
 
                 UserDatabase.Users[target].CustomSettings["points"] = amount.ToString();
-                ChatBot.Client.SendMessage($"'{target}' {amount} {PointSystemPlugin.Settings.PointNamePlural} set");
+                PluginSystem.SendChatMessage($"'{target}' {amount} {PointSystemPlugin.Settings.PointNamePlural} set");
             }
 
             return true;

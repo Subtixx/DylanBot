@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using TwitchLib.Models.Client;
 
 namespace DylanTwitch
@@ -18,13 +17,26 @@ namespace DylanTwitch
     }
 
     public delegate void UserJoinEventHandler(string channel, string username);
+
     public delegate void UserLeftEventHandler(string channel, string username);
+
     public delegate void UserSubscribedEventHandler(Subscriber subscriber);
+
     public delegate void ChannelJoinedEventHandler(string channel, string username);
+
     public delegate void MessageReceivedEventHandler(ChatMessage message);
 
     public static class PluginSystem
     {
+        public static readonly Dictionary<string, Plugin> LoadedPlugins = new Dictionary<string, Plugin>();
+
+        public static CommandController Commands => ChatBot.CommandController;
+
+        public static void SendChatMessage(string channel, string message) => ChatBot.Client.SendMessage(channel, message);
+        public static void SendChatMessage(string message) => ChatBot.Client.SendMessage(message);
+        public static void SendWhisperMessage(string receiver, string message) => ChatBot.Client.SendWhisper(receiver, message);
+
+        #region Events
         public static event UserJoinEventHandler OnUserJoin;
         public static event UserLeftEventHandler OnUserLeft;
         public static event UserSubscribedEventHandler OnUserSubscribe;
@@ -55,8 +67,7 @@ namespace DylanTwitch
         {
             OnMessageReceived?.Invoke(message);
         }
-
-        public static readonly Dictionary<string, Plugin> LoadedPlugins = new Dictionary<string, Plugin>();
+        #endregion
 
         internal static void Initialize()
         {

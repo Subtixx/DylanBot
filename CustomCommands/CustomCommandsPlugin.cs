@@ -19,11 +19,11 @@ namespace CustomCommands
 
             foreach (var command in Settings.RegisteredCommands)
             {
-                ChatBot.CommandController.RegisterGlobalCommand(command.Key, args =>
+                PluginSystem.Commands.RegisterGlobalCommand(command.Key, args =>
                 {
                     if (Settings.Active)
                     {
-                        ChatBot.Client.SendMessage(TranslateableString.Translate(command.Value,
+                        PluginSystem.SendChatMessage(TranslateableString.Translate(command.Value,
                             new Dictionary<string, string>()
                             {
                                 {"$username", args.Command.ChatMessage.Username}

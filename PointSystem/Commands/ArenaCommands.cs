@@ -15,14 +15,14 @@ namespace PointSystem
 
         public static void RegisterCommands()
         {
-            ChatBot.CommandController.RegisterGlobalCommand("challenge", OnChallengeCommand);
+            PluginSystem.Commands.RegisterGlobalCommand("challenge", OnChallengeCommand);
         }
 
         private static bool OnChallengeCommand(OnChatCommandReceivedArgs arg)
         {
             if (!PointSystemPlugin.Settings.ArenaActive || !PointSystemPlugin.Settings.ArenaChallengeActive)
             {
-                ChatBot.Client.SendMessage(PointSystemPlugin.Settings.ArenaChallengeNotActive);
+                PluginSystem.SendChatMessage(PointSystemPlugin.Settings.ArenaChallengeNotActive);
                 return false;
             }
 
@@ -30,13 +30,13 @@ namespace PointSystem
 
             if (ActiveChallenges.ContainsKey(username) || ActiveChallenges.ContainsValue(username))
             {
-                ChatBot.Client.SendMessage(PointSystemPlugin.Settings.ArenaChallengeAlreadyFighting);
+                PluginSystem.SendChatMessage(PointSystemPlugin.Settings.ArenaChallengeAlreadyFighting);
                 return false;
             }
 
             if (arg.Command.ArgumentsAsList.Count < 1)
             {
-                ChatBot.Client.SendMessage("Syntax: !challenge [Target]");
+                PluginSystem.SendChatMessage("Syntax: !challenge [Target]");
                 return false;
             }
 
@@ -45,13 +45,13 @@ namespace PointSystem
             if (!ActiveChallengeRequests.ContainsKey(target) && PointSystemPlugin.Settings.ArenaChallengeCostIsBet &&
                 PointSystemPlugin.Settings.ArenaChallengeAllowCustomAmount && arg.Command.ArgumentsAsList.Count != 2)
             {
-                ChatBot.Client.SendMessage("Syntax: !challenge [Target] or !challenge [Target] [Amount]");
+                PluginSystem.SendChatMessage("Syntax: !challenge [Target] or !challenge [Target] [Amount]");
                 return false;
             }
 
             if (username.Equals(target))
             {
-                ChatBot.Client.SendMessage(PointSystemPlugin.Settings.ArenaChallengeSelfError);
+                PluginSystem.SendChatMessage(PointSystemPlugin.Settings.ArenaChallengeSelfError);
                 return false;
             }
 
@@ -59,7 +59,7 @@ namespace PointSystem
             {
                 if (!UserDatabase.Users.ContainsKey(username) || !UserDatabase.Users.ContainsKey(target))
                 {
-                    ChatBot.Client.SendMessage(PointSystemPlugin.Settings.ArenaChallengeNotEnoughPoints);
+                    PluginSystem.SendChatMessage(PointSystemPlugin.Settings.ArenaChallengeNotEnoughPoints);
                     return false;
                 }
 
@@ -68,7 +68,7 @@ namespace PointSystem
                     int.Parse(UserDatabase.Users[target].CustomSettings["points"]) <
                     PointSystemPlugin.Settings.ArenaChallengeCost)
                 {
-                    ChatBot.Client.SendMessage(PointSystemPlugin.Settings.ArenaChallengeNotEnoughPoints);
+                    PluginSystem.SendChatMessage(PointSystemPlugin.Settings.ArenaChallengeNotEnoughPoints);
                     return false;
                 }
             }
@@ -89,7 +89,7 @@ namespace PointSystem
                     ActiveChallengeRequests.Remove(target); // Remove challenge request
                     ActiveChallenges.Add(target, username); // Add active challenge
 
-                    ChatBot.Client.SendMessage(
+                    PluginSystem.SendChatMessage(
                         TranslateableString.Translate(PointSystemPlugin.Settings.ArenaChallengeAccepted,
                             new Dictionary<string, string>
                             {
@@ -104,7 +104,7 @@ namespace PointSystem
                     {
                         aTimer.Stop();
 
-                        ChatBot.Client.SendMessage(
+                        PluginSystem.SendChatMessage(
                             TranslateableString.Translate(PointSystemPlugin.Settings.ArenaChallengeFight,
                                 new Dictionary<string, string>
                                 {
@@ -129,7 +129,7 @@ namespace PointSystem
                             (int.Parse(UserDatabase.Users[winnerUsername].CustomSettings["points"]) +
                              PointSystemPlugin.Settings.ArenaChallengeCost * 2).ToString();
 
-                        ChatBot.Client.SendMessage(
+                        PluginSystem.SendChatMessage(
                             TranslateableString.Translate(PointSystemPlugin.Settings.ArneaChallengeOutcome,
                                 new Dictionary<string, string>
                                 {
@@ -146,7 +146,7 @@ namespace PointSystem
             {
                 // Challenge start
                 ActiveChallengeRequests.Add(username, target);
-                ChatBot.Client.SendMessage(
+                PluginSystem.SendChatMessage(
                     TranslateableString.Translate(PointSystemPlugin.Settings.ArenaChallengeMessage,
                         new Dictionary<string, string>
                         {
@@ -163,7 +163,7 @@ namespace PointSystem
                     {
                         ActiveChallengeRequests.Remove(username);
 
-                        ChatBot.Client.SendMessage(
+                        PluginSystem.SendChatMessage(
                             TranslateableString.Translate(PointSystemPlugin.Settings.ArenaChallengeTimeoutMsg,
                                 new Dictionary<string, string>
                                 {

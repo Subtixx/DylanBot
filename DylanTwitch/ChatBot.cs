@@ -5,7 +5,7 @@ using TwitchLib.Models.Client;
 
 namespace DylanTwitch
 {
-    public class ChatBot
+    internal class ChatBot
     {
         private const string CLIENT_ID = "27yqxc53mrldhm1mwtobwuqbr7x85f6";
 

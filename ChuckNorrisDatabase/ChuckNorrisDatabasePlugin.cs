@@ -33,33 +33,93 @@ namespace ChuckNorrisDatabase
 
     public class ChuckNorrisDatabasePlugin : Plugin
     {
+        private const string NameJokeUrl = "http://api.icndb.com/jokes/random?firstName=$firstName&lastName=$lastName";
+        private const string CategoryJokeUrl = "http://api.icndb.com/jokes/random?limitTo=[$cats]";
         private const string RandomJokeUrl = "http://api.icndb.com/jokes/random";
 
         public override void Load()
         {
-            ChatBot.CommandController.RegisterGlobalCommand("joke", OnJokeCommand);
+            PluginSystem.Commands.RegisterGlobalCommand("chuck", OnJokeCommand);
         }
 
-        private bool OnJokeCommand(OnChatCommandReceivedArgs onChatCommandReceivedArgs)
+        private bool OnJokeCommand(OnChatCommandReceivedArgs args)
         {
-            using (WebClient web = new WebClient())
+            if (args.Command.ArgumentsAsList.Count == 0)
             {
-                var result = JsonConvert.DeserializeObject<JokeResult>(web.DownloadString(RandomJokeUrl));
-                if (result != null && result.Type == "success")
+                using (WebClient web = new WebClient())
                 {
-                    ChatBot.Client.SendMessage(WebUtility.HtmlDecode(result.Value.Joke));
+                    var result = JsonConvert.DeserializeObject<JokeResult>(web.DownloadString(RandomJokeUrl));
+                    if (result != null && result.Type == "success")
+                    {
+                        PluginSystem.SendChatMessage(WebUtility.HtmlDecode(result.Value.Joke));
+                    }
+                    else
+                    {
+                        PluginSystem.SendChatMessage("I was unable to find any jokes :/");
+                    }
                 }
-                else
-                {
-                    ChatBot.Client.SendMessage("I was unable to find any jokes :/");
-                }
+                return true;
             }
+            else if (args.Command.ArgumentsAsList.Count == 3 && args.Command.ArgumentsAsList[0] == "name")
+            {
+                var names = CommandController.ParseLine(args.Command.ArgumentsAsString);
+                if (names.Count != 3)
+                {
+                    PluginSystem.SendChatMessage("Syntax: !joke [FirstName] [LastName]");
+                    return false;
+                }
+
+                using (WebClient web = new WebClient())
+                {
+                    var result = JsonConvert.DeserializeObject<JokeResult>(web.DownloadString(CategoryJokeUrl.Replace("$firstName", names[1]).Replace("$lastName", names[2])));
+                    if (result != null && result.Type == "success")
+                    {
+                        PluginSystem.SendChatMessage(WebUtility.HtmlDecode(result.Value.Joke));
+                    }
+                    else
+                    {
+                        PluginSystem.SendChatMessage("I was unable to find any jokes :/");
+                    }
+                }
+                return true;
+            }
+            /*else if (args.Command.ArgumentsAsList.Count >= 1)
+            {
+                var cats = CommandController.ParseLine(args.Command.ArgumentsAsString);
+                if (cats.Count == 0)
+                {
+                    PluginSystem.SendChatMessage("Syntax: !joke [Category] (Category)");
+                    return false;
+                }
+
+                var include = "";
+                foreach (var cat in cats)
+                {
+                    var c = cat.Replace(",", "").Replace("\"", "");
+                    if (include != "")
+                        include += "," + c;
+                    else include += c;
+                }
+                using (WebClient web = new WebClient())
+                {
+                    var json = web.DownloadString(CategoryJokeUrl.Replace("$cats", include));
+                    var result = JsonConvert.DeserializeObject<JokeResult>(json);
+                    if (result != null && result.Type == "success")
+                    {
+                        PluginSystem.SendChatMessage(WebUtility.HtmlDecode(result.Value.Joke));
+                    }
+                    else
+                    {
+                        PluginSystem.SendChatMessage("I was unable to find any jokes :/");
+                    }
+                }
+            }*/
             return false;
         }
 
         public override void Unload()
         {
-            ChatBot.CommandController.UnregisterGlobalCommand("joke");
+            PluginSystem.Commands.UnregisterGlobalCommand("chuck");
         }
     }
 }

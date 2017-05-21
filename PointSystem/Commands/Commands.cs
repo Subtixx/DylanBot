@@ -14,7 +14,7 @@ namespace PointSystem
         public static void Register()
         {
             // Add chat command
-            ChatBot.CommandController.RegisterGlobalCommand(PointSystemPlugin.Settings.PointCommand, OnPointCommand);
+            PluginSystem.Commands.RegisterGlobalCommand(PointSystemPlugin.Settings.PointCommand, OnPointCommand);
 
             AdminCommands.RegisterCommands();
             ArenaCommands.RegisterCommands();
@@ -22,7 +22,7 @@ namespace PointSystem
 
         public static void Unregister()
         {
-            ChatBot.CommandController.UnregisterGlobalCommand(PointSystemPlugin.Settings.PointCommand);
+            PluginSystem.Commands.UnregisterGlobalCommand(PointSystemPlugin.Settings.PointCommand);
         }
 
         private static bool OnPointCommand(OnChatCommandReceivedArgs args)
@@ -39,7 +39,7 @@ namespace PointSystem
                     : PointSystemPlugin.Settings.PointName;
 
 
-                ChatBot.Client.SendMessage(
+                PluginSystem.SendChatMessage(
                     TranslateableString.Translate(PointSystemPlugin.Settings.PointAmountMessage,
                         new Dictionary<string, string>
                         {
@@ -50,7 +50,7 @@ namespace PointSystem
             }
             else
             {
-                ChatBot.Client.SendMessage(
+                PluginSystem.SendChatMessage(
                     TranslateableString.Translate(PointSystemPlugin.Settings.PointAmountMessage,
                         new Dictionary<string, string>
                         {
