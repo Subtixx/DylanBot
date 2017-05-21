@@ -62,7 +62,8 @@
     <Compile Include="DefaultCommands\ChannelMod.cs" />
     <Compile Include="DefaultCommands\ChannelSettings.cs" />
     <Compile Include="DefaultCommands\UserCommands.cs" />
-    <Compile Include="PluginSystem.cs" />
+    <Compile Include="PluginAPI\Plugin.cs" />
+    <Compile Include="PluginAPI\PluginSystem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
