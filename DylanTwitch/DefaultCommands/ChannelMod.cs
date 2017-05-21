@@ -8,8 +8,7 @@ namespace DylanTwitch.DefaultCommands
     {
         public static void Register()
         {
-            ChatBot.CommandController.RegisterGlobalCommand("clear", OnClearChatCommand, new List<string> {"prune"});
-                // <-- aliases
+            ChatBot.CommandController.RegisterGlobalCommand("clear", OnClearChatCommand, new List<string> {"prune"}); // <-- aliases
         }
 
         private static bool OnClearChatCommand(OnChatCommandReceivedArgs args)

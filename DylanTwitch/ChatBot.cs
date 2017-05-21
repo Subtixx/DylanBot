@@ -1,7 +1,11 @@
-﻿using DylanTwitch.DefaultCommands;
+﻿using System;
+using DylanTwitch.DefaultCommands;
 using TwitchLib;
 using TwitchLib.Events.Client;
+using TwitchLib.Events.Services.FollowerService;
+using TwitchLib.Models.API.v5.Users;
 using TwitchLib.Models.Client;
+using TwitchLib.Services;
 
 namespace DylanTwitch
 {
@@ -10,7 +14,10 @@ namespace DylanTwitch
         private const string CLIENT_ID = "27yqxc53mrldhm1mwtobwuqbr7x85f6";
 
         public static TwitchClient Client;
+        public static TwitchPubSub PubSub;
         public static readonly CommandController CommandController = new CommandController();
+
+        public static UserAuthed Channel = null;
 
         internal ChatBot()
         {
@@ -33,12 +40,27 @@ namespace DylanTwitch
             Client.OnMessageReceived += OnMessageReceived;
             Client.OnWhisperReceived += OnWhisperReceived;
             Client.OnNewSubscriber += OnNewSubscriber;
+            Client.OnReSubscriber += OnReSubcriber;
             Client.OnUserJoined += OnUserJoined;
             Client.OnUserLeft += OnUserLeft;
+            Client.OnExistingUsersDetected += OnUserListReceived;
 
             Client.Connect();
 
+            FollowerService service = new FollowerService();
+            service.OnNewFollowersDetected += OnNewFollowersDetected;
+            service.StartService();
+
+            PubSub = new TwitchPubSub();
+            PubSub.Connect();
+
+            TwitchAPI.Users.v5.GetUser(Settings.Config.AuthToken).ContinueWith(task => Channel = task.Result);
+
             RegisterGlobalCommands();
+        }
+
+        private void OnUserListReceived(object sender, OnExistingUsersDetectedArgs onExistingUsersDetectedArgs)
+        {
         }
 
         private void RegisterGlobalCommands()
@@ -53,6 +75,9 @@ namespace DylanTwitch
             Settings.Save();
 
             UserDatabase.SaveDatabase();
+
+            Client.Disconnect();
+            PubSub.Disconnect();
         }
 
         // Twitch events here
@@ -98,10 +123,19 @@ namespace DylanTwitch
         {
         }
 
+        private void OnReSubcriber(object sender, OnReSubscriberArgs e)
+        {
+            PluginSystem.UserReSubscribed(e.ReSubscriber);
+        }
         private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
             // Execute plugin events
             PluginSystem.UserSubscribed(e.Subscriber);
+        }
+
+        private void OnNewFollowersDetected(object sender, OnNewFollowersDetectedArgs e)
+        {
+            PluginSystem.UserFollowed(e);
         }
     }
 }

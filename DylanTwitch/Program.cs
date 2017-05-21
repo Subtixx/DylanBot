@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows;
+using DylanTwitch.Forms;
 
 //27yqxc53mrldhm1mwtobwuqbr7x85f6
 //
@@ -35,13 +37,23 @@ namespace DylanTwitch
 
             var bot = new ChatBot();
             PluginSystem.Initialize();
-            do
+
+            //App.Main();
+            
+            while (true)
+            {
+                var line = Console.ReadLine();
+                if (line == "quit")
+                    break;
+            }
+
+            /*do
             {
                 while (!Console.KeyAvailable)
                 {
                     // Do something
                 }
-            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+            } while (Console.ReadKey(true).Key != ConsoleKey.Escape);*/
 
             PluginSystem.Shutdown();
             bot.Shutdown();
