@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib;
-using TwitchLib.Events.Client;
-using TwitchLib.Models.Client;
 
 //27yqxc53mrldhm1mwtobwuqbr7x85f6
 //
 
 namespace DylanTwitch
 {
-    class Program
+    internal class Program
     {
         private const int MF_BYCOMMAND = 0x00000000;
         public const int SC_CLOSE = 0xF060;
@@ -30,17 +22,18 @@ namespace DylanTwitch
         private static extern IntPtr GetConsoleWindow();
 
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            // Disable X button on the console window.
             DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
 
-            // Pre-Startup Checks
+            // Pre-Startup Checks (Ensures our directories are in place.)
             if (!Directory.Exists("Plugins"))
                 Directory.CreateDirectory("Plugins");
             if (!Directory.Exists("Settings"))
                 Directory.CreateDirectory("Settings");
 
-            ChatBot bot = new ChatBot();
+            var bot = new ChatBot();
             PluginSystem.Initialize();
             do
             {

@@ -7,7 +7,7 @@
 // Last Modified On : 05-19-2017
 // ***********************************************************************
 // <copyright file="User.cs">
-//     Copyright ©  2017
+//     Copyright © Subtixx 2017
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 namespace DylanTwitch
 {
     /// <summary>
-    /// Class User.
+    /// Class to save informations about a User.
     /// </summary>
     public class User
     {
