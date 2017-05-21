@@ -10,35 +10,29 @@ namespace PointSystem
 {
     public static class Events
     {
-        public static void RegisterEvents()
+        public static void Register()
         {
-            PluginSystem.RegisterEvent(PluginSystem.EventType.UserSubscribed, OnNewSubscriber);
+            PluginSystem.OnUserSubscribe += OnNewSubscriber;
         }
 
-        /// <summary>
-        /// Unregisters all events.
-        /// </summary>
-        /// Not possible currently <see cref="PluginSystem">PluginSystem</see>
         public static void Unregister()
         {
-            //PluginSystem.UnregisterEvent();
+            PluginSystem.OnUserSubscribe -= OnNewSubscriber;
         }
 
-        private static bool OnNewSubscriber(object[] args)
+        private static void OnNewSubscriber(Subscriber subscriber)
         {
             if (!PointSystemPlugin.Settings.Active)
-                return false;
-
-            var user = (Subscriber)args[0];
-            var username = user.DisplayName;
-            var prime = user.IsTwitchPrime;
+                return;
+            
+            var username = subscriber.DisplayName;
+            var prime = subscriber.IsTwitchPrime;
 
             if (UserDatabase.Users.ContainsKey(username) &&
                 UserDatabase.Users[username].CustomSettings.ContainsKey("points"))
                 UserDatabase.Users[username].CustomSettings["points"] += prime
                     ? PointSystemPlugin.Settings.PrimeSubscriptionAmount
                     : PointSystemPlugin.Settings.RegularSubscriptionAmount;
-            return true;
         }
     }
 }

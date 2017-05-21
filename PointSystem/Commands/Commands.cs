@@ -11,7 +11,7 @@ namespace PointSystem
 {
     public static class Commands
     {
-        public static void RegisterCommands()
+        public static void Register()
         {
             // Add chat command
             ChatBot.CommandController.RegisterGlobalCommand(PointSystemPlugin.Settings.PointCommand, OnPointCommand);

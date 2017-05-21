@@ -6,7 +6,7 @@ namespace DylanTwitch.DefaultCommands
 {
     public static class ChannelMod
     {
-        public static void RegisterCommands()
+        public static void Register()
         {
             ChatBot.CommandController.RegisterGlobalCommand("clear", OnClearChatCommand, new List<string> {"prune"});
                 // <-- aliases

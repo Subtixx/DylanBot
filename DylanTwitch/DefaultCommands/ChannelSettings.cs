@@ -5,7 +5,7 @@ namespace DylanTwitch.DefaultCommands
 {
     public static class ChannelSettings
     {
-        public static void RegisterCommands()
+        public static void Register()
         {
             ChatBot.CommandController.RegisterWhisperCommand("setgame", OnSetGameCommand);
         }

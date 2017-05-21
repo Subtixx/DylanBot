@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TwitchLib.Models.Client;
 
 namespace DylanTwitch
 {
@@ -16,27 +17,49 @@ namespace DylanTwitch
         public abstract void Unload();
     }
 
+    public delegate void UserJoinEventHandler(string channel, string username);
+    public delegate void UserLeftEventHandler(string channel, string username);
+    public delegate void UserSubscribedEventHandler(Subscriber subscriber);
+    public delegate void ChannelJoinedEventHandler(string channel, string username);
+    public delegate void MessageReceivedEventHandler(ChatMessage message);
+
     public static class PluginSystem
     {
-        public enum EventType
+        public static event UserJoinEventHandler OnUserJoin;
+        public static event UserLeftEventHandler OnUserLeft;
+        public static event UserSubscribedEventHandler OnUserSubscribe;
+        public static event ChannelJoinedEventHandler OnChannelJoin;
+        public static event MessageReceivedEventHandler OnMessageReceived;
+
+        internal static void UserJoin(string channel, string username)
         {
-            UserJoin,
-            UserLeave,
-            UserSubscribed,
-            ChannelJoined,
-            Message
+            OnUserJoin?.Invoke(channel, username);
         }
 
-        public static Dictionary<string, Plugin> LoadedPlugins = new Dictionary<string, Plugin>();
+        internal static void UserLeft(string channel, string username)
+        {
+            OnUserLeft?.Invoke(channel, username);
+        }
 
-        private static readonly Dictionary<EventType, List<Func<object[], bool>>> _registeredEvents =
-            new Dictionary<EventType, List<Func<object[], bool>>>();
+        internal static void UserSubscribed(Subscriber subscriber)
+        {
+            OnUserSubscribe?.Invoke(subscriber);
+        }
+
+        internal static void ChannelJoin(string channel, string username)
+        {
+            OnChannelJoin?.Invoke(channel, username);
+        }
+
+        internal static void MessageReceived(ChatMessage message)
+        {
+            OnMessageReceived?.Invoke(message);
+        }
+
+        public static readonly Dictionary<string, Plugin> LoadedPlugins = new Dictionary<string, Plugin>();
 
         internal static void Initialize()
         {
-            foreach (var val in Enum.GetValues(typeof(EventType)))
-                _registeredEvents.Add((EventType) val, new List<Func<object[], bool>>());
-
             var plugins = Directory.GetFiles("Plugins", "*.dll").ToList();
             plugins.ForEach(file => LoadPlugin(new FileInfo(file)));
 
@@ -52,29 +75,6 @@ namespace DylanTwitch
         public static bool IsPluginLoaded(string pluginName)
         {
             return LoadedPlugins.ContainsKey(pluginName);
-        }
-
-        // Rework event system to not have "unknown" arguments
-        public static void RegisterEvent(EventType evt, Func<object[], bool> func)
-        {
-            _registeredEvents[evt].Add(func);
-        }
-
-        internal static void UnregisterEvent()
-        {
-            // There is currently no way of unregistering events.
-        }
-
-        internal static void ProcessEvent(EventType evt, params object[] args)
-        {
-            if (!_registeredEvents.ContainsKey(evt))
-            {
-                Console.WriteLine($"Catastrophic failure. {evt} doesn't exist as event.");
-                return;
-            }
-
-            foreach (var func in _registeredEvents[evt])
-                func(args);
         }
 
         private static void LoadPlugin(FileInfo file)
@@ -97,19 +97,10 @@ namespace DylanTwitch
                         }
                     }
             }
-            catch (ReflectionTypeLoadException ex)
+            catch (Exception ex)
             {
-                var sb = new StringBuilder();
-                foreach (var exSub in ex.LoaderExceptions)
-                {
-                    sb.AppendLine(exSub.Message);
-                    var exFileNotFound = exSub as FileNotFoundException;
-                    if (!string.IsNullOrEmpty(exFileNotFound?.FusionLog))
-                    {
-                        sb.AppendLine("Fusion Log:");
-                        sb.AppendLine(exFileNotFound.FusionLog);
-                    }
-                }
+                Console.WriteLine($"Plugin '{file.Name}' has thrown an exception:");
+                Console.WriteLine(ex.ToString());
             }
         }
     }

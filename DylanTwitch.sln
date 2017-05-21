@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCommands", "CustomCom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle", "Raffle\Raffle.csproj", "{6860BED2-A01F-4402-9645-767D28E0A5AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChuckNorrisDatabase", "ChuckNorrisDatabase\ChuckNorrisDatabase.csproj", "{4406414E-7C85-47FE-A6F2-CCD847B81D29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{6860BED2-A01F-4402-9645-767D28E0A5AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6860BED2-A01F-4402-9645-767D28E0A5AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6860BED2-A01F-4402-9645-767D28E0A5AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4406414E-7C85-47FE-A6F2-CCD847B81D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4406414E-7C85-47FE-A6F2-CCD847B81D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4406414E-7C85-47FE-A6F2-CCD847B81D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4406414E-7C85-47FE-A6F2-CCD847B81D29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,5 +49,6 @@ Global
 		{425C8B7A-A984-43C5-9C86-061C3B57B86A} = {B15E0AEC-6644-426D-B4C9-02FA77A1FE8F}
 		{0BEE123C-1D5E-4741-86D1-D714C0BA9FD8} = {B15E0AEC-6644-426D-B4C9-02FA77A1FE8F}
 		{6860BED2-A01F-4402-9645-767D28E0A5AD} = {B15E0AEC-6644-426D-B4C9-02FA77A1FE8F}
+		{4406414E-7C85-47FE-A6F2-CCD847B81D29} = {B15E0AEC-6644-426D-B4C9-02FA77A1FE8F}
 	EndGlobalSection
 EndGlobal

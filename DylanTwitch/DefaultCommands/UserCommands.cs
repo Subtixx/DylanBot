@@ -8,7 +8,7 @@ namespace DylanTwitch.DefaultCommands
     {
         private static DateTime? ChannelLiveStart;
 
-        public static void RegisterCommands()
+        public static void Register()
         {
             ChatBot.CommandController.RegisterGlobalCommand("watchtime", OnWatchTimeCommand);
 

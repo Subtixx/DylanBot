@@ -7,7 +7,7 @@ namespace DylanTwitch
 {
     public class ChatBot
     {
-        internal const string CLIENT_ID = "27yqxc53mrldhm1mwtobwuqbr7x85f6";
+        private const string CLIENT_ID = "27yqxc53mrldhm1mwtobwuqbr7x85f6";
 
         public static TwitchClient Client;
         public static readonly CommandController CommandController = new CommandController();
@@ -43,9 +43,9 @@ namespace DylanTwitch
 
         private void RegisterGlobalCommands()
         {
-            UserCommands.RegisterCommands();
-            ChannelMod.RegisterCommands();
-            ChannelSettings.RegisterCommands();
+            UserCommands.Register();
+            ChannelMod.Register();
+            ChannelSettings.Register();
         }
 
         internal void Shutdown()
@@ -61,7 +61,7 @@ namespace DylanTwitch
             UserDatabase.UserJoined(e.Username);
 
             // Execute plugin events
-            PluginSystem.ProcessEvent(PluginSystem.EventType.UserJoin, e.Channel, e.Username);
+            PluginSystem.UserJoin(e.Channel, e.Username);
         }
 
         private void OnUserLeft(object sender, OnUserLeftArgs e)
@@ -69,17 +69,19 @@ namespace DylanTwitch
             UserDatabase.UserLeft(e.Username);
 
             // Execute plugin events
-            PluginSystem.ProcessEvent(PluginSystem.EventType.UserLeave, e.Channel, e.Username);
+            PluginSystem.UserLeft(e.Channel, e.Username);
         }
 
         private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
-            PluginSystem.ProcessEvent(PluginSystem.EventType.ChannelJoined, e.Channel, e.Username);
+            // Execute plugin events
+            PluginSystem.ChannelJoin(e.Channel, e.Username);
         }
 
         private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            PluginSystem.ProcessEvent(PluginSystem.EventType.Message, e.ChatMessage);
+            // Execute plugin events
+            PluginSystem.MessageReceived(e.ChatMessage);
         }
 
         private void OnChatCommand(object sender, OnChatCommandReceivedArgs e)
@@ -99,7 +101,7 @@ namespace DylanTwitch
         private void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
         {
             // Execute plugin events
-            PluginSystem.ProcessEvent(PluginSystem.EventType.UserSubscribed, e.Subscriber);
+            PluginSystem.UserSubscribed(e.Subscriber);
         }
     }
 }

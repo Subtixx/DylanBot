@@ -17,8 +17,8 @@ namespace PointSystem
             LoadSettingsFile();
             AddCustomUserSettings();
 
-            Events.RegisterEvents();
-            Commands.RegisterCommands();
+            Events.Register();
+            Commands.Register();
         }
 
         private void AddCustomUserSettings()

@@ -87,7 +87,7 @@ namespace DylanTwitch
         /// <param name="commandName">Name of the command.</param>
         /// <param name="args">The arguments.</param>
         /// <returns><c>true</c> if the command was executed successfully, <c>false</c> otherwise.</returns>
-        public bool ExecuteGlobalCommand(string commandName, OnChatCommandReceivedArgs args)
+        internal bool ExecuteGlobalCommand(string commandName, OnChatCommandReceivedArgs args)
         {
             if (_registeredGlobalCommands.ContainsKey(commandName))
             {
@@ -136,7 +136,7 @@ namespace DylanTwitch
         /// <param name="commandName">Name of the command.</param>
         /// <param name="args">The arguments.</param>
         /// <returns><c>true</c> if the command was executed successfully, <c>false</c> otherwise.</returns>
-        public bool ExecuteWhisperCommand(string commandName, OnWhisperCommandReceivedArgs args)
+        internal bool ExecuteWhisperCommand(string commandName, OnWhisperCommandReceivedArgs args)
         {
             if (_registeredWhisperCommands.ContainsKey(commandName))
             {
