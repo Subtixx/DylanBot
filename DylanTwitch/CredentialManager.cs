@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
+using WebBrowser = System.Windows.Forms.WebBrowser;
 
 // This can be used to get an oauth to for a user. This is NOT finished.
 namespace DylanTwitch
@@ -40,7 +43,7 @@ namespace DylanTwitch
                     $"https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id={_clientId}&redirect_uri=http://localhost&scope={_scope}&state=c3ab8aa609ea11e793ae92361f002671"));
 
             while (frm.Visible)
-                Application.DoEvents();
+                System.Windows.Forms.Application.DoEvents();
         }
     }
 }

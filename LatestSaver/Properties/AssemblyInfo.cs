@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DylanBot Chuck Norris Database Plugin")]
-[assembly: AssemblyDescription("Plugin to fetch latest jokes about chuck norris from the web")]
+[assembly: AssemblyTitle("DylanBot Latest Saver Plugin")]
+[assembly: AssemblyDescription("Plugin to provide a way to save the latest sub & follower to file")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DylanBot Chuck Norris Database Plugin")]
+[assembly: AssemblyProduct("DylanBot Latest Saver Plugin")]
 [assembly: AssemblyCopyright("Copyright © Subtixx 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4406414e-7c85-47fe-a6f2-ccd847b81d29")]
+[assembly: Guid("2e8364cd-3813-4319-8601-7e89eaeac632")]
 
 // Version information for an assembly consists of the following four values:
 //

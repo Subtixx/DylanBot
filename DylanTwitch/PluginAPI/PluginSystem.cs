@@ -17,6 +17,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
+using TwitchLib.Events.Services.FollowerService;
+using TwitchLib.Models.API.v5.Users;
 using TwitchLib.Models.Client;
 
 namespace DylanTwitch
@@ -59,6 +62,10 @@ namespace DylanTwitch
     /// </summary>
     /// <param name="message">The message.</param>
     public delegate void MessageReceivedEventHandler(ChatMessage message);
+
+    public delegate void UserFollowedEventHandler(OnNewFollowersDetectedArgs args);
+
+    public delegate void UserReSubscribedEventHandler(Subscriber subscriber);
 
     /// <summary>
     ///     Main class to interact with the bot.
@@ -108,6 +115,7 @@ namespace DylanTwitch
                         {
                             b.Load();
                             LoadedPlugins.Add(assembly.FullName, b);
+                            break; // Only load first Plugin Type.
                         }
                     }
             }
@@ -118,12 +126,14 @@ namespace DylanTwitch
             }
         }
 
-        #region API
-
         /// <summary>
         ///     A dictionary containing all loaded plugins
         /// </summary>
         internal static readonly Dictionary<string, Plugin> LoadedPlugins = new Dictionary<string, Plugin>();
+
+        #region API
+
+        public static UserAuthed ChannelUser => ChatBot.Channel;
 
         /// <summary>
         ///     Register and unregister commands
@@ -155,6 +165,10 @@ namespace DylanTwitch
         ///     Occurs when [a message is received].
         /// </summary>
         public static event MessageReceivedEventHandler OnMessageReceived;
+
+        public static event UserFollowedEventHandler OnUserFollowed;
+
+        public static event UserReSubscribedEventHandler OnUserReSubscribed;
 
         /// <summary>
         ///     Sends a message to the channel chat.
@@ -240,6 +254,15 @@ namespace DylanTwitch
             OnMessageReceived?.Invoke(message);
         }
 
+        internal static void UserFollowed(OnNewFollowersDetectedArgs args)
+        {
+            OnUserFollowed?.Invoke(args);
+        }
+
+        internal static void UserReSubscribed(Subscriber subscriber)
+        {
+            OnUserReSubscribed?.Invoke(subscriber);
+        }
         #endregion
     }
 }
