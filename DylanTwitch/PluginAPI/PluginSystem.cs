@@ -4,12 +4,12 @@
 // Created          : 05-21-2017
 //
 // Last Modified By : Subtixx
-// Last Modified On : 05-21-2017
+// Last Modified On : 06-15-2017
 // ***********************************************************************
 // <copyright file="PluginSystem.cs">
 //     Copyright © Subtixx 2017
 // </copyright>
-// <summary></summary>
+// <summary>The main class for interactions with Plugins</summary>
 // ***********************************************************************
 
 using System;
@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 using TwitchLib.Events.Services.FollowerService;
 using TwitchLib.Models.API.v5.Users;
 using TwitchLib.Models.Client;
@@ -63,15 +62,39 @@ namespace DylanTwitch
     /// <param name="message">The message.</param>
     public delegate void MessageReceivedEventHandler(ChatMessage message);
 
+    /// <summary>
+    ///     User Followed Event
+    ///     Gets executed when a user follows the channel
+    /// </summary>
+    /// <param name="args">The arguments.</param>
     public delegate void UserFollowedEventHandler(OnNewFollowersDetectedArgs args);
 
+    /// <summary>
+    ///     User Re-Subscribed Event
+    ///     Gets executed when a user re-subscribes to the channel
+    /// </summary>
+    /// <param name="subscriber">The subscriber.</param>
     public delegate void UserReSubscribedEventHandler(Subscriber subscriber);
+
+    /// <summary>
+    ///     User List Event
+    ///     Gets executed when we receive the list of users in channel
+    ///     TODO: Maybe do this periodically and use a field for this
+    /// </summary>
+    /// <param name="channel">The channel.</param>
+    /// <param name="users">The users.</param>
+    public delegate void UserListEventHandler(string channel, List<string> users);
 
     /// <summary>
     ///     Main class to interact with the bot.
     /// </summary>
     public static class PluginSystem
     {
+        /// <summary>
+        ///     A dictionary containing all loaded plugins
+        /// </summary>
+        internal static readonly Dictionary<string, Plugin> LoadedPlugins = new Dictionary<string, Plugin>();
+
         /// <summary>
         ///     Initializes this instance.
         ///     Loads all plugins
@@ -126,11 +149,6 @@ namespace DylanTwitch
             }
         }
 
-        /// <summary>
-        ///     A dictionary containing all loaded plugins
-        /// </summary>
-        internal static readonly Dictionary<string, Plugin> LoadedPlugins = new Dictionary<string, Plugin>();
-
         #region API
 
         public static UserAuthed ChannelUser => ChatBot.Channel;
@@ -166,9 +184,20 @@ namespace DylanTwitch
         /// </summary>
         public static event MessageReceivedEventHandler OnMessageReceived;
 
+        /// <summary>
+        ///     Occurs when [a user follows the channel].
+        /// </summary>
         public static event UserFollowedEventHandler OnUserFollowed;
 
+        /// <summary>
+        ///     Occurs when [a user re-subscribes].
+        /// </summary>
         public static event UserReSubscribedEventHandler OnUserReSubscribed;
+
+        /// <summary>
+        ///     Occurs when [a user list is received].
+        /// </summary>
+        public static event UserListEventHandler OnUserList;
 
         /// <summary>
         ///     Sends a message to the channel chat.
@@ -199,7 +228,7 @@ namespace DylanTwitch
         /// <returns><c>true</c> if the specified plugin is loaded; otherwise, <c>false</c>.</returns>
         public static bool IsPluginLoaded(string pluginName)
         {
-            return LoadedPlugins.ContainsKey(pluginName);
+            return LoadedPlugins.ContainsKey(pluginName); // TODO: Switch to UUID.
         }
 
         #endregion
@@ -254,15 +283,34 @@ namespace DylanTwitch
             OnMessageReceived?.Invoke(message);
         }
 
+        /// <summary>
+        ///     Invokes the OnUserFollowed event handler
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         internal static void UserFollowed(OnNewFollowersDetectedArgs args)
         {
             OnUserFollowed?.Invoke(args);
         }
 
+        /// <summary>
+        ///     Invokes the OnUserReSubscribed event handler
+        /// </summary>
+        /// <param name="subscriber">The subscriber.</param>
         internal static void UserReSubscribed(Subscriber subscriber)
         {
             OnUserReSubscribed?.Invoke(subscriber);
         }
+
+        /// <summary>
+        ///     Invokes the OnUserList event handler
+        /// </summary>
+        /// <param name="channel">The channel.</param>
+        /// <param name="users">The users.</param>
+        public static void UserList(string channel, List<string> users)
+        {
+            OnUserList?.Invoke(channel, users);
+        }
+
         #endregion
     }
 }

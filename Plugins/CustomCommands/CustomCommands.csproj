@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Plugins\</OutputPath>
+    <OutputPath>..\..\bin\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -57,7 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DylanTwitch\DylanTwitch.csproj">
+    <ProjectReference Include="..\..\DylanTwitch\DylanTwitch.csproj">
       <Project>{2E990184-6F98-4B0D-9DCC-0800E627F2F0}</Project>
       <Name>DylanTwitch</Name>
       <Private>False</Private>

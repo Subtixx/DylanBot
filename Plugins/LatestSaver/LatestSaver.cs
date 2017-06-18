@@ -35,8 +35,11 @@ namespace LatestSaver
 
             if (Settings.SaveLatestSubscriber)
                 if (PluginSystem.ChannelUser != null && !PluginSystem.ChannelUser.Partnered)
+                {
                     Console.WriteLine(
                         "WARNING: Saving latest subscriber is not supported since the channel is not partnered!");
+                    Settings.SaveLatestSubscriber = false;
+                }
         }
 
         private void OnUserReSubscribe(Subscriber subscriber)

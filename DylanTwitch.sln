@@ -5,17 +5,17 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DylanTwitch", "DylanTwitch\DylanTwitch.csproj", "{2E990184-6F98-4B0D-9DCC-0800E627F2F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointSystem", "PointSystem\PointSystem.csproj", "{425C8B7A-A984-43C5-9C86-061C3B57B86A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointSystem", "Plugins\PointSystem\PointSystem.csproj", "{425C8B7A-A984-43C5-9C86-061C3B57B86A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{B15E0AEC-6644-426D-B4C9-02FA77A1FE8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCommands", "CustomCommands\CustomCommands.csproj", "{0BEE123C-1D5E-4741-86D1-D714C0BA9FD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCommands", "Plugins\CustomCommands\CustomCommands.csproj", "{0BEE123C-1D5E-4741-86D1-D714C0BA9FD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle", "Raffle\Raffle.csproj", "{6860BED2-A01F-4402-9645-767D28E0A5AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raffle", "Plugins\Raffle\Raffle.csproj", "{6860BED2-A01F-4402-9645-767D28E0A5AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChuckNorrisDatabase", "ChuckNorrisDatabase\ChuckNorrisDatabase.csproj", "{4406414E-7C85-47FE-A6F2-CCD847B81D29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChuckNorrisDatabase", "Plugins\ChuckNorrisDatabase\ChuckNorrisDatabase.csproj", "{4406414E-7C85-47FE-A6F2-CCD847B81D29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatestSaver", "LatestSaver\LatestSaver.csproj", "{2E8364CD-3813-4319-8601-7E89EAEAC632}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LatestSaver", "Plugins\LatestSaver\LatestSaver.csproj", "{2E8364CD-3813-4319-8601-7E89EAEAC632}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

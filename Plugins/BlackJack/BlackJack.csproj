@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4406414E-7C85-47FE-A6F2-CCD847B81D29}</ProjectGuid>
+    <ProjectGuid>{C31B42BC-A8CA-4442-A0B3-D2129B159145}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChuckNorrisDatabase</RootNamespace>
-    <AssemblyName>ChuckNorrisDatabase</AssemblyName>
+    <RootNamespace>BlackJack</RootNamespace>
+    <AssemblyName>BlackJack</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\Plugins\</OutputPath>
+    <OutputPath>..\..\bin\Debug\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,8 +31,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,23 +43,23 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="TwitchLib, Version=1.4.9.5190, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TwitchLib.1.4.9\lib\net45\TwitchLib.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\TwitchLib.1.4.9\lib\net45\TwitchLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.32519, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebSocketSharp-NonPreRelease.1.0.0\lib\net35\websocket-sharp.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\packages\WebSocketSharp-NonPreRelease.1.0.0\lib\net35\websocket-sharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChuckNorrisDatabasePlugin.cs" />
+    <Compile Include="BlackJack.cs" />
+    <Compile Include="BlackJackSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DylanTwitch\DylanTwitch.csproj">
+    <ProjectReference Include="..\..\DylanTwitch\DylanTwitch.csproj">
       <Project>{2E990184-6F98-4B0D-9DCC-0800E627F2F0}</Project>
       <Name>DylanTwitch</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
