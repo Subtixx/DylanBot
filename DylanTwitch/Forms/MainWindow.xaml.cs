@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using DylanTwitch.Util;
 using TwitchLib;
@@ -18,9 +19,10 @@ namespace DylanTwitch.Forms
             ChatBot.Client.OnMessageReceived += OnChatMessage;
             ChatBot.Client.OnUserJoined += OnUserJoin;
             ChatBot.Client.OnUserLeft += OnUserLeft;
+            PluginSystem.OnUserList += OnUserList;
 
             // Add all users currently in chat
-            TwitchAPI.Undocumented.GetChatters(ChatBot.Client.JoinedChannels[0].Channel).ContinueWith(task =>
+            /*TwitchAPI.Undocumented.GetChatters(ChatBot.Client.JoinedChannels[0].Channel).ContinueWith(task =>
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -28,6 +30,17 @@ namespace DylanTwitch.Forms
                     {
                         if(!listBox.Items.Contains(a.Username)) listBox.Items.Add(a.Username);
                     });
+                });
+            });*/
+        }
+
+        private void OnUserList(string channel, List<string> users)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                users.ForEach(username =>
+                {
+                    if (!listBox.Items.Contains(username)) listBox.Items.Add(username);
                 });
             });
         }

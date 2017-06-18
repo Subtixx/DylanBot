@@ -54,13 +54,10 @@ namespace DylanTwitch
             PubSub = new TwitchPubSub();
             PubSub.Connect();
 
+            // We should probably "pre-setup" everything that is async.
             TwitchAPI.Users.v5.GetUser(Settings.Config.AuthToken).ContinueWith(task => Channel = task.Result);
 
             RegisterGlobalCommands();
-        }
-
-        private void OnUserListReceived(object sender, OnExistingUsersDetectedArgs onExistingUsersDetectedArgs)
-        {
         }
 
         private void RegisterGlobalCommands()
@@ -81,6 +78,12 @@ namespace DylanTwitch
         }
 
         // Twitch events here
+
+        private void OnUserListReceived(object sender, OnExistingUsersDetectedArgs e)
+        {
+            PluginSystem.UserList(e.Channel, e.Users);
+        }
+
         private void OnUserJoined(object sender, OnUserJoinedArgs e)
         {
             UserDatabase.UserJoined(e.Username);

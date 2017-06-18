@@ -2,8 +2,6 @@
 using System.IO;
 using DylanTwitch;
 using Newtonsoft.Json;
-using TwitchLib.Events.Client;
-using TwitchLib.Models.Client;
 
 namespace PointSystem
 {
